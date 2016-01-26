@@ -1,0 +1,6 @@
+shoppingList
+*.gch
+*.o
+*.pdf
+*.zip
+.DS_Store
