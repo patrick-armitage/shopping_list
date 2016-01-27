@@ -1,9 +1,11 @@
 /*******************************************************************************
 ** Author: Patrick Armitage
-** Date: 01/19/2016
-** Description: Die class prototypes, which include one private data member,
-** getters and setters, and a virtual method roll() which calculates dice roll
-** and is overwritten by the child class.
+** Date: 01/26/2016
+** Description: Display function prototypes, which leverage the Ncurses lib
+** functionality to access data (via a provided List class), and handle the
+** input/output to and from the program's user.  These functions include
+** display functions to display the shopping list, string formatting functions,
+** and separate "screen" functions that enable the user to add and remove items
 *******************************************************************************/
 
 #include <string>

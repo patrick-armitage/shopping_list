@@ -1,6 +1,6 @@
 /*******************************************************************************
 ** Author: Patrick Armitage
-** Date: 01/19/2016
+** Date: 01/26/2016
 ** Description: Item methods file which defines the methods of the
 ** Item class that were prototyped within the GameBoard header file
 *******************************************************************************/
@@ -13,9 +13,10 @@ using std::string;
 /*----------------------------------------------------------------------------*/
 /*
     Function Name: Item
-    Function Parameters: integer number of sides
+    Function Parameters: item's name string, quantity integer and price double
     What the function does: initializes a new instance of the Item class,
-                            setting number of sides to the provided sides arg
+                            setting the item name, quantity, and price to the
+                            provided args' values
 */
 Item::Item(string name, int quantity, double price) {
     setItemName(name);
@@ -23,11 +24,11 @@ Item::Item(string name, int quantity, double price) {
     setPrice(price);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*
-    Function Names: getSides, setSides
-    Functions' Parameters: setSides has an integer sides parameter
+    Function Names: setItemName, setQuantity, setPrice, getItemName,
+                    getQuantity, getPrice
+    Functions' Parameters: setters use corresponding values of data members
     What the functions do: getters and setters which act as public options to
                            read/write the Item class's private attribute methods
 */

@@ -1,9 +1,9 @@
 /*******************************************************************************
 ** Author: Patrick Armitage
-** Date: 01/19/2016
-** Description: Die class prototypes, which include one private data member,
-** getters and setters, and a virtual method roll() which calculates dice roll
-** and is overwritten by the child class.
+** Date: 01/26/2016
+** Description: List class prototypes, which several private data members and
+** a host of methods that enable manipulating and recreating an item list
+** and finding calculations based on items within the list.
 *******************************************************************************/
 
 #include <string>

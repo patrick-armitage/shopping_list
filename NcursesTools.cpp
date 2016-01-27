@@ -16,8 +16,8 @@ using std::string;
     Function Parameters: N/A
     What the function does: initializes Ncurses session in a basic state,
                             setting such commands as getch() to blocking mode
-                            which enables user to input GoL configuration
-                            before the start of the game
+                            which enables screen to wait with output remaining
+                            static until user enters commands
 */
 void initCurses() {
     setlocale(LC_ALL, "");
