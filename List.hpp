@@ -30,9 +30,8 @@ class List {
     int getListSize();
     int getListMax();
     Item **createListWithMax();
-    double calculateExtended(Item *item);
     double calculateListTotal();
-    void addItem(string name, int quantity, double price);
+    void addItem(string name, string unitType, int quantity, double price);
     void removeItem(string name);
     bool itemExists(string name);
 };

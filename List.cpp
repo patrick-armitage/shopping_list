@@ -142,23 +142,6 @@ Item **List::createListWithMax() {
 
 /*----------------------------------------------------------------------------*/
 /*
-    Function Name: calculateExtended
-    Function Parameters: Item object pointer
-    What the function does: calculates the "extended cost" of passed in item
-                            by accessing the item's quantity and price, and
-                            multiplying the two together, returning the result
-*/
-double List::calculateExtended(Item *item) {
-    double extendedPrice;
-    int quantity = item->getQuantity();
-    double price = item->getPrice();
-
-    extendedPrice = quantity * price;
-    return extendedPrice;
-}
-
-/*----------------------------------------------------------------------------*/
-/*
     Function Name: calculateListTotal
     Function Parameters: Item object pointer
     What the function does: calculates the total cost of all the items in the
@@ -175,7 +158,7 @@ double List::calculateListTotal() {
     Item *item;
     for (int i = 0; i < size; i++) {
         item = *(list + i);
-        totalCost += calculateExtended(item);
+        totalCost += item->calculateExtended();
     }
 
     return totalCost;
@@ -196,11 +179,11 @@ double List::calculateListTotal() {
                             class's list, the old list deleted, and the List
                             class's list size incremented
 */
-void List::addItem(string name, int quantity, double price) {
+void List::addItem(string name, string unitType, int quantity, double price) {
     Item **list = getItemList();
     int size = getListSize();
 
-    Item *item = new Item(name, quantity, price);
+    Item *item = new Item(name, unitType, quantity, price);
     Item **newList = createListWithMax();
     if (size > 0) {
         for (int i = 0; i < size; i++) {
@@ -233,15 +216,17 @@ void List::removeItem(string name) {
     Item **list = getItemList();
     int size = getListSize();
     Item **newList = new Item*[10];
+    Item item1(name, "  ", 0, 0.0);
+    Item *item2;
 
     int counter = 0;
     for (int i = 0; i < size; i++) {
-        Item *item = *(list + i);
+        item2 = *(list + i);
 
-        if (item->getItemName() == name) {
+        if (item1 == item2) {
             counter -= 1;
         } else {
-            newList[counter] = item;
+            newList[counter] = item2;
         }
 
         counter++;
@@ -267,11 +252,12 @@ bool List::itemExists(string name) {
     Item **list = getItemList();
     int size = getListSize();
 
+    Item item1(name, "  ", 0, 0.0);
+    Item *item2;
     for (int i = 0; i < size; i++) {
-        Item *item = *(list + i);
-        string itemName = item->getItemName();
+        item2 = *(list + i);
 
-        if (itemName == name) {
+        if (item1 == item2) {
             return true;
         }
     }

@@ -17,16 +17,21 @@ using std::string;
 class Item {
  private:
     string itemName;
+    string unitType;
     int quantity;
     double price;
  public:
-    Item(string itemName, int quantity, double price);
+    Item(string itemName, string unitType, int quantity, double price);
     void setItemName(string itemName);
+    void setUnitType(string unitType);
     void setQuantity(int quantity);
     void setPrice(double price);
     string getItemName();
+    string getUnitType();
     int getQuantity();
     double getPrice();
+    double calculateExtended();
+    friend bool operator==(Item item1, Item *item2);
 };
 
 #endif

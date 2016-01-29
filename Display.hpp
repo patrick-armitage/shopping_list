@@ -22,8 +22,10 @@ void displayHeaderRow();
 void displayItemRow(Item *item);
 void displayFooterRow(double totalListCost);
 string formatName(string name);
-string formatQuantity(int quantity);
+string formatQuantity(int quantity, string unitType);
 string formatPrice(double price);
+string formatExtendedPrice(Item *item);
+string formatTotal(double totalCost);
 void addItemScreen(List *list);
 void removeItemScreen(List *list);
 

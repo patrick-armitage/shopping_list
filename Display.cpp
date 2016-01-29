@@ -56,9 +56,13 @@ void displayList(List *list) {
                             appropriate length for the items' name, quantity
                             and price
 */
+// Item Name          | Quantity | Price
+// ------------------------------------------------------
+// Item Name          | Quantity | Price/lb | Total Price
+//                       Price for all items:
 void displayHeaderRow() {
-    printw("----------------------------------------\n");
-    printw("Item Name          | Quantity | Price   \n");
+    printw("------------------------------------------------------\n");
+    printw("Item Name          | Quantity | Price    | Total Price\n");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,12 +77,14 @@ void displayHeaderRow() {
 */
 void displayItemRow(Item *item) {
     string name = item->getItemName();
+    string unitType = item->getUnitType();
     int quantity = item->getQuantity();
     double price = item->getPrice();
 
     string row = formatName(name);
-    row += "|" + formatQuantity(quantity);
-    row += "|" + formatPrice(price) + "\n";
+    row += "|" + formatQuantity(quantity, unitType);
+    row += "|" + formatPrice(price);
+    row += "|" + formatExtendedPrice(item) + "\n";
     printw(row.c_str());
 }
 
@@ -93,12 +99,13 @@ void displayItemRow(Item *item) {
                             printHeaderRow section
 */
 void displayFooterRow(double totalListCost) {
-    string title = "                   Total Price:";
-    string price = formatPrice(totalListCost);
+    printw("                                         |\n");
+    string title = "                     Price for all items:|";
+    string price = formatTotal(totalListCost);
     string row = title + price + "\n";
 
     printw(row.c_str());
-    printw("----------------------------------------\n");
+    printw("------------------------------------------------------\n");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,15 +156,16 @@ string formatName(string name) {
                             fills in any missing whitespace for column spacing.
                             Only allows integers of 8 digits (should be plenty!)
 */
-string formatQuantity(int quantity) {
+string formatQuantity(int quantity, string unitType) {
     // use a static cast from integer to long long so that to_string method call will
     // compile using -std=c++x0 flag on flip server (before c++11)
     string q = to_string(static_cast<long long>(quantity));
     int length = q.length();
     string formatted;
+    q = q + " " + unitType;
 
-    if (length < 8) {
-        int difference = 8 - length;
+    if (length < 5) {
+        int difference = 5 - length;
 
         for (int i = 0; i < difference; i++) {
             q += " ";
@@ -193,8 +201,8 @@ string formatPrice(double price) {
     int length = p.length();
     string formatted;
 
-    if (length < 8) {
-        int difference = 8 - length;
+    if (length < 9) {
+        int difference = 9 - length;
 
         for (int i = 0; i < difference; i++) {
             p += " ";
@@ -202,6 +210,49 @@ string formatPrice(double price) {
     }
 
     formatted = " " + p;
+    return formatted;
+}
+
+string formatExtendedPrice(Item *item) {
+    double extended = item->calculateExtended();
+
+    stringstream stream;
+    stream << fixed << setprecision(2) << extended;
+    string e = stream.str();
+    int length = e.length();
+    string formatted;
+
+    if (length < 11) {
+        int difference = 11 - length;
+
+        for (int i = 0; i < difference; i++) {
+            e += " ";
+        }
+    }
+
+    formatted = " " + e;
+    return formatted;
+}
+
+string formatTotal(double total) {
+    // we use a stringstream to read the double sized at precision(2) into the string
+    // which is similar to reading the double to the std::cout function, except the
+    // stringstream buffer is stored in memory and can be converted to a string
+    stringstream stream;
+    stream << fixed << setprecision(2) << total;
+    string t = stream.str();
+    int length = t.length();
+    string formatted;
+
+    if (length < 11) {
+        int difference = 6 - length;
+
+        for (int i = 11; i < difference; i++) {
+            t += " ";
+        }
+    }
+
+    formatted = " " + t;
     return formatted;
 }
 
@@ -218,7 +269,7 @@ string formatPrice(double price) {
                             the list
 */
 void addItemScreen(List *list) {
-    string itemName, quantity, price, message;
+    string itemName, unitType, quantity, price, message;
 
     printw("Please insert the item name: ");
     itemName = getString();
@@ -227,15 +278,24 @@ void addItemScreen(List *list) {
         message = "'" + itemName + "' is already in your list!";
         printw(message.c_str());
     } else {
-        printw("Please insert the quantity you plan to purchase: ");
+        printw("What kind of unit do you wish to purchase this item in?\n");
+        printw("Enter the number of your selection ([1] pounds, [2] ounces, [3] fluid ounces): ");
+        unitType = getString();
+        int u = stoi(unitType);
+        if (u == 1) { unitType = "lb";
+        } else if (u == 2) { unitType = "oz";
+        } else if (u == 3) { unitType = "fl";
+        } else { unitType = "  "; }
+
+        printw("Please insert the number of units you plan to purchase: ");
         quantity = getString();
-        printw("Please insert the item's price: ");
+        printw("Please insert the item's price per pound: ");
         price = getString();
 
         // convert quantity and price strings to integer and double, respectively
         int quantInt = stoi(quantity);
         double priceDouble = stod(price);
-        list->addItem(itemName, quantInt, priceDouble);
+        list->addItem(itemName, unitType, quantInt, priceDouble);
         message = "'" + itemName + "' has been added to your list!";
         printw(message.c_str());
     }
