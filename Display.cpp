@@ -63,6 +63,7 @@ void displayList(List *list) {
 void displayHeaderRow() {
     printw("------------------------------------------------------\n");
     printw("Item Name          | Quantity | Price    | Total Price\n");
+    printw("------------------------------------------------------\n");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +100,7 @@ void displayItemRow(Item *item) {
                             printHeaderRow section
 */
 void displayFooterRow(double totalListCost) {
-    printw("                                         |\n");
+    printw("-----------------------------------------|            \n");
     string title = "                     Price for all items:|";
     string price = formatTotal(totalListCost);
     string row = title + price + "\n";
